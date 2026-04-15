@@ -1,1 +1,3 @@
-public class ColaDePilas implements Cola {}
+public class ColaDePilas implements Cola {
+    
+}
