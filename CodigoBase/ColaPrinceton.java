@@ -1,3 +1,3 @@
-public class ColaPrinceton extends Queue<T> implements Cola<T> {
+public class ColaPrinceton<T> extends Queue<T> implements Cola<T> {
 
 }
