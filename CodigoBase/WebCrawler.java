@@ -3,7 +3,6 @@ import java.util.regex.Pattern;
 
 public class WebCrawler {
 
-    
     private Pila<String> pila;
     private Cola<String> cola;
 
@@ -13,24 +12,19 @@ public class WebCrawler {
         this.cola = cola;
     }
 
-    
-    
     public boolean esXHTMLValido(String xhtml) {
         
         while (!pila.isEmpty()) {
             pila.pop();
         }
-
         
         if (!xhtml.contains("<!DOCTYPE>")) {
             return false;
         }
 
-
         if (!xhtml.contains("<html") || !xhtml.contains("xmlns")) {
             return false;
         }
-
 
         Pattern pattern = Pattern.compile("<(/?)(\\w+)[^>]*>");
         Matcher matcher = pattern.matcher(xhtml);
@@ -46,7 +40,6 @@ public class WebCrawler {
             if (!etiqueta.equals(etiqueta.toLowerCase())) {
                 return false; 
             }
-
             
             if (esCierre.equals("/")) {
             
@@ -60,12 +53,9 @@ public class WebCrawler {
                 pila.push(etiqueta);
             }
         }
-
         
         return pila.isEmpty();
     }
-
-    
     
     public boolean chequearURL(String url) {
         try {
@@ -84,9 +74,6 @@ public class WebCrawler {
         }
     }
     
-    //  Falta el método chequeaURLs
-
-    
     public boolean chequeaURLs(String urlInicial, int limite) {
         
         SET<String> visitadas = new SET<String>();
@@ -94,10 +81,8 @@ public class WebCrawler {
         
         cola.enqueue(urlInicial);
         visitadas.add(urlInicial);
-
         int paginasRevisadas = 0;
         boolean todasValidas = true; 
-
         
         while (!cola.isEmpty() && paginasRevisadas < limite) {
             
@@ -110,7 +95,6 @@ public class WebCrawler {
             if (!esValido) {
                 todasValidas = false; 
             }
-
             
             try {
                 In in = new In(urlActual);
@@ -120,7 +104,6 @@ public class WebCrawler {
                     
                     Pattern pattern = Pattern.compile("<a[^>]*href=[\"']([^\"']+)[\"'][^>]*>");
                     Matcher matcher = pattern.matcher(contenido);
-
                     while (matcher.find()) {
                         String nuevoLink = matcher.group(1);
                         
@@ -132,13 +115,21 @@ public class WebCrawler {
                     }
                 }
             } catch (Exception e) {
-                
+                System.out.println("error con la url " + e.getMessage());
             }
         }
-
         return todasValidas; 
     }
+    public static void main(String[] args) {
+        Pila<String> pila = new Pila<String>();
+        Cola<String> cola = new Cola<String>();
+        WebCrawler crawler = new WebCrawler(pila, cola);
 
+        String urlInicial = ""; 
+        int limite = 100; 
+
+        boolean resultado = crawler.chequeaURLs(urlInicial, limite);
+        System.out.println("las paginas validas son: " + resultado);
+    }
     
-    // TODO: Falta el public static void main
 }
