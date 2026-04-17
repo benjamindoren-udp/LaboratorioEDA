@@ -135,8 +135,8 @@ public static void simularCrawlerOffline ( int N , Cola < String > fila ) {
         Cola<String> cola = new ColaPrinceton<String>();
         WebCrawler crawler = new WebCrawler(pila, cola);
 
-        String urlInicial = "https://eit.udp.cl/"; 
-        int limite = 100; 
+        String urlInicial = "Crawler Test Site.html"; 
+        int limite = 200; 
 
         boolean resultado = crawler.chequeaURLs(urlInicial, limite);
         System.out.println("las paginas validas son: " + resultado);
