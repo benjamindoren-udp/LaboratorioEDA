@@ -1,0 +1,175 @@
+.loader{
+  position: fixed;
+  z-index:1000;
+  top:0;
+  left:0;
+  width:100vw;
+  height:100vh;
+  background-color:white;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  transition:all 0.66s ease;
+}
+.loader-logo-container{
+  position: relative;
+    width: 300px;
+    height: 144px;
+}
+.loader img{
+  position: absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:top left;
+}
+.loader .background-loading{
+  filter:grayscale(100%);
+  z-index:0;
+}
+.loader .color-loading{
+  z-index:1;
+  opacity:0;
+}
+.loader.start-loading .color-loading{
+  opacity:1;
+  animation-name: loader-animation;
+  animation-duration: 1s;
+  transition:all 0.25s ease;
+}
+.loader.finish-loading{
+  filter: blur(15px);
+  opacity:0;
+}
+@keyframes loader-animation {
+  0%   {width: 0%;}
+  25%  {width: 25%;}
+  50%  {width: 50%;}
+  75%  {width: 75%;}
+  100% {width: 100%;}
+}
+.slider_inicio .slide{
+  width: 100vw;
+  height: 500px;
+  color: white;
+  display: flex!important;
+  flex-flow: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.slider_inicio .slide img{
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+	z-index:-1;
+}
+.slider_inicio .slide .filter{
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	background: rgba(0,0,0,0.2);
+}
+.slick-dots {
+    position: absolute;
+    bottom: 80px;
+    display: block;
+    list-style: none;
+    text-align: center;
+    display: flex!important;
+    justify-content: flex-start;
+    width:88vw;
+    left:6vw;
+}
+@media(min-width:1400px){
+  .slick-dots {
+    width:74vw;
+    left:13vw;
+  }
+}
+.slick-dots *{
+  opacity:1!important;
+}
+.slick-dots li button::before{
+  width: 15px;
+  padding:0;
+  height:15px;
+  border-radius:50%;
+  background-color:transparent;
+  border:2px solid white;
+  content:"";
+  margin:0 10px;
+  opacity:1!important;
+}
+.slick-dots .slick-active button::before{
+  background-color:white;
+}
+.slick-dotted.slick-slider{
+  margin-bottom:0px!important;
+}
+.slider_inicio .slide *{
+  transition:all 0.66s ease 0.33s;
+  filter:blur(10px);
+  transform:translateX(-2vw);
+  opacity:0;
+}
+.slider_inicio .slide img{
+  transform:none;
+  filter:blur(30px);
+    transition:all 0.66s ease;
+}
+.slider_inicio .slide.slick-active *{
+  filter:blur(0px);
+  transform:translateX(0vw);
+  opacity:1;
+}
+.card .text{
+  padding:15px;
+}
+.image-holder{
+  position:relative;
+  width: 100%;
+  overflow: hidden;
+  display: block;
+  height: 0;
+  padding-bottom:60%;
+}
+.image-holder img{
+    opacity: 1;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    object-fit: cover;
+    transition:all 1s ease;
+}
+.card:hover .image-holder img{
+  transform:scale(1.02) translateX(0.5%);
+  filter:grayscale(10%);
+}
+.card{
+  cursor: pointer;
+}
+.contact-flex{
+  display: flex;
+  align-items: center;
+}
+.contact-flex .fa{
+  font-size:20px;
+  margin-right:12px;
+  width:16px;
+}
+.flex{
+  display: flex;
+  justify-content: space-around;
+  width:100%;
+}

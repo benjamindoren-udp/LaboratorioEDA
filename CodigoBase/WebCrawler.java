@@ -121,8 +121,8 @@ public class WebCrawler {
         return todasValidas; 
     }
     public static void main(String[] args) {
-        Pila<String> pila = new Pila<String>();
-        Cola<String> cola = new Cola<String>();
+        Pila<String> pila = new PilaPrinceton<String>();
+        Cola<String> cola = new ColaPrinceton<String>();
         WebCrawler crawler = new WebCrawler(pila, cola);
 
         String urlInicial = ""; 

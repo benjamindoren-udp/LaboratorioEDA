@@ -1,0 +1,261 @@
+$('.collapsible').collapsible();
+setTimeout(function(){
+  $('.collapsible  li:first-child .collapsible-header').trigger('click');
+}, 666);
+if($('.alteration').size() > 0){
+  $('.alteration').each(function(){
+     if (!$(this).text().trim().length) {
+       $(this).remove();
+     }
+  });
+}
+$('.blocks-gallery-item a').each(function(){
+$(this).removeAttr("href");
+  $(this).find('img').addClass('materialboxed');
+
+});
+$('.materialboxed').materialbox();
+$('ul.tabs').tabs();
+//$('select').material_select();
+var carrera = '';
+$('.filter_current').on('change', function(){
+    if($(this).val() != ''){
+      carrera = $(this).val();
+    }
+    if(carrera == ''){
+    }else{
+    //  console.log(carrera);
+      if(carrera == 'all'){
+        $('.post-filter-container').removeClass('hidden');
+      }else{
+        $('.post-filter-container').addClass('hidden');
+        $('.post-filter-container[data-carrera="'+carrera+'"]').removeClass('hidden');
+      }
+    }
+});
+$('.filter-current-search').on('change', function(){
+	var counter = 1;
+	var posts = {};
+		$('.search-filter-class').addClass('hidden');
+		$('.filter-current-search').each(function(){
+			var sub_val = $(this).val();
+			var name = $(this).attr('name');
+			if(sub_val == 'all'){
+				if(counter == 1){
+					$('.search-filter-class').removeClass('hidden');
+				}
+			}else{
+				if(counter == 1){
+					$('.search-filter-class[data-'+name+'="'+sub_val+'"]').removeClass('hidden');
+				}else{
+					$('.search-filter-class:not(.hidden)[data-'+name+'!="'+sub_val+'"]').addClass('hidden');
+				}
+			counter++;
+
+			}
+		});
+
+});
+
+$('.filter').on('change', function(){
+  var current_url = window.location.href.split('?')[0].split('/page')[0];
+  var operator = '?';
+  $('.filter').each(function(){
+    if($(this).val() != 'all'){
+      current_url = current_url + operator + $(this).attr('name') + '=' + $(this).val();
+      operator = '&';
+    }
+  });
+  window.location.href = current_url;
+});
+$('.filter_search').on('change', function(){
+  var current_url = window.location.href.split('/page')[0];
+  var operator = '&';
+    if($(this).val() != 'all'){
+      current_url = current_url + operator + $(this).attr('name') + '=' + $(this).val();
+    }
+  window.location.href = current_url;
+});
+$('.pre-selector').each(function(){
+  $('select[name="'+$(this).attr('data-select')+'"]').val($(this).attr('data-value'))
+});
+
+$('#nav-icon').click(function(){
+  if($(this).hasClass('open')){
+    $(this).removeClass('open');
+    $('body').removeClass('menu_open');
+  }else{
+      $(this).addClass('open');
+      $('body').addClass('menu_open');
+  }
+});
+
+
+
+
+
+$('.filter_current_different').on('change', function(){
+  var value = $(this).val();
+  if(value == 'all'){
+    $('.post-filter-container').removeClass('hidden');
+  }else{
+    $('.post-filter-container').addClass('hidden');
+    $('.different-filter[data-value="'+value+'"]').each(function(){
+      $(this).closest('.post-filter-container').removeClass('hidden');
+    });
+  }
+});
+if($('.filter_current_different').size() > 0){
+  var start = $('.filter_current_different').attr('data-start');
+  if(start == ''){
+    start = 'Autoridades Facultad';
+  }
+  $('.filter_current_different').val(start);
+  $('.post-filter-container').addClass('hidden');
+  $('.different-filter[data-value="'+start+'"]').each(function(){
+    $(this).closest('.post-filter-container').removeClass('hidden');
+  });
+}
+
+
+$('.filter_redirect').on('change', function(){
+  var value = $(this).val();
+  if(value != 'all'){
+    window.location.href = value;
+  }
+});
+
+
+
+//  filtered-content filter-value
+// data-name
+// data-value
+$('.filter-current').on('change', function(){
+  var filter_counter = 0;
+  $('.filtered-content').addClass('hidden');
+  $('.filter-current').each(function(){
+    if($(this).val() != 'all'){
+      if(filter_counter == 0){
+        $('.filter-value[data-name="'+$(this).attr('name')+'"][data-value="'+$(this).val()+'"]').each(function(){
+          $(this).closest('.filtered-content').removeClass('hidden');
+        });
+        filter_counter++;
+      }else{
+        var value = $(this).val();
+        var name = $(this).attr('name');
+        $('.filtered-content:not(.hidden)').each(function(){
+            if($(this).find('.filter-value[data-name="'+name+'"][data-value="'+value+'"]').size() > 0){
+            }else{
+              $(this).addClass('hidden');
+            }
+        });
+      }
+    }
+  });
+  if(filter_counter == 0){
+    $('.filtered-content').removeClass('hidden');
+  }
+});
+if($('.entradas_de_persona').size() > 0){
+  $('.entradas_de_persona').each(function(){
+    $(this).find('.filtered-content').sort(function(a, b) {
+      return parseInt($(b).find('.filter-value[data-name="ano"]').attr('data-value').trim()) - parseInt($(a).find('.filter-value[data-name="ano"]').attr('data-value').trim());
+    }).appendTo(this);
+  });
+}
+
+$('.scroller_down').click(function(){
+    var viewportHeight = $(window).height();
+
+    $('html, body').animate({
+        scrollTop: viewportHeight - 70
+    }, 666);
+});
+
+
+$(window).scroll(testScroll);
+var viewed = false;
+
+function isScrolledIntoView(elem) {
+    var docViewTop = $(window).scrollTop();
+    var docViewBottom = docViewTop + $(window).height();
+
+    var elemTop = $(elem).offset().top;
+    var elemBottom = elemTop + $(elem).height();
+
+    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+}
+
+function testScroll() {
+	if($('body').hasClass('home')){
+		var window_height = $(window).height() - 107;
+    	var scroll_height = $(window).scrollTop();
+		if( scroll_height > window_height ){
+			$('body').addClass('change_header');
+		}else{
+			$('body').removeClass('change_header');
+		}
+	}
+  if($(".cifras").size() > 0){
+    if (isScrolledIntoView($(".cifras")) && !viewed) {
+        viewed = true;
+        $('.cifra .value').each(function () {
+        $(this).prop('Counter',0).animate({
+            Counter: $(this).text()
+        }, {
+            duration: 3000,
+            easing: 'swing',
+            step: function (now) {
+                $(this).text(Math.ceil(now));
+            }
+        });
+      });
+    }
+  }
+}
+
+$('.clase .inner').click(function(){
+    $('.more_info').removeClass('active');
+    $(this).closest('.clase').find('.more_info').addClass('active');
+    $(this).closest('.clase').find('.underlay').addClass('active');
+});
+$('.clase .underlay').click(function(){
+      $('.more_info').removeClass('active');
+      $(this).removeClass('active');
+});
+$('.filter_linea').click(function(){
+  if($(this).hasClass('active')){
+    $(this).removeClass('active');
+    $('.clase').removeClass('half-hidden');
+  }else{
+    $('.filter_linea').removeClass('active');
+    $(this).addClass('active');
+  }
+  if($('.filter_linea.active').size() > 0){
+    if($(this).attr('data-filter') == 'all'){
+      $('.clase').removeClass('half-hidden');
+    }else{
+      $('.clase').removeClass('half-hidden');
+      $('.clase[data-term-id!="'+$(this).attr('data-filter')+'"]').addClass('half-hidden');
+    }
+  }
+});
+$('.js-reveal-search').click(function(){
+  $('body').addClass('search_active');
+  $('.search_wrap').addClass('active');
+  $('.search_wrap input').focus();
+});
+$('.js-cancel-search').click(function(){
+  $('body').removeClass('search_active');
+  $('.search_wrap').removeClass('active');
+  $('body').removeClass('noscroll');
+  $('.search_results').removeClass('active');
+});
+
+
+$('.js-open-modal').click(function(){
+  $('.modal_lab_wrap[data-modal="'+$(this).attr('data-modal')+'"]').addClass('active');
+});
+$('.modal_lab_wrap .closer, .modal_lab_wrap .underlay').click(function(){
+  $(this).closest('.modal_lab_wrap').removeClass('active');
+});
