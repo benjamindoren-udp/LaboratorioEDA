@@ -120,12 +120,22 @@ public class WebCrawler {
         }
         return todasValidas; 
     }
+
+public static void simularCrawlerOffline ( int N , Cola < String > fila ) {
+    fila . enqueue ( " url_raiz " ) ;
+    for ( int i = 0; i < N ; i ++) {
+        if (! fila . isEmpty () ) fila . dequeue () ;
+        // Simulamos que encontramos 2 links por pagina
+        fila . enqueue ( " link1_ " + i ) ;
+        fila . enqueue ( " link2_ " + i ) ;
+    }
+}
     public static void main(String[] args) {
         Pila<String> pila = new PilaPrinceton<String>();
         Cola<String> cola = new ColaPrinceton<String>();
         WebCrawler crawler = new WebCrawler(pila, cola);
 
-        String urlInicial = ""; 
+        String urlInicial = "https://eit.udp.cl/"; 
         int limite = 100; 
 
         boolean resultado = crawler.chequeaURLs(urlInicial, limite);
