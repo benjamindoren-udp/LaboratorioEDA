@@ -16,14 +16,13 @@ public class Experimento {
         int iterador[] = {10, 11, 12, 13, 14, 15};
         
         //pone un comentario menos hecho por el aimigo para explicar que es esto
-        int multiplicadorTrabajo = 1000; 
+        int multiplicador = 1000; 
         
         Out out = new Out("resultados_laboratorio.csv");
         out.println("N,PilaPrinceton,PilaDeCola,ColaPrinceton,ColaDePilas"); 
 
         for (int exp : iterador) {
             int N = (int) Math.pow(2, exp);
-            System.out.println("Midiendo tiempos para N = " + N + " (Esto tomará unos segundos)...");
 
             String xhtmlPrueba = generarXHTMLSintetico(N);
 
@@ -32,41 +31,41 @@ public class Experimento {
                 //medicion pila princenton
                 WebCrawler crawler1 = new WebCrawler(new PilaPrinceton<String>(), new ColaPrinceton<String>());
                 StopwatchCPU timer1 = new StopwatchCPU();
-                for (int i = 0; i < multiplicadorTrabajo; i++) {
+                for (int i = 0; i < multiplicador; i++) {
                     crawler1.esXHTMLValido(xhtmlPrueba);
                 }
-                double tiempoT1 = timer1.elapsedTime() / multiplicadorTrabajo;
+                double tiempoT1 = timer1.elapsedTime() / multiplicador;
                 String t1 = String.format(Locale.US, "%.8f", tiempoT1);
 
 
                 //medicion pila de cola
                 WebCrawler crawler2 = new WebCrawler(new PilaDeCola<String>(), new ColaPrinceton<String>());
                 StopwatchCPU timer2 = new StopwatchCPU();
-                for (int i = 0; i < multiplicadorTrabajo; i++) {
+                for (int i = 0; i < multiplicador; i++) {
                     crawler2.esXHTMLValido(xhtmlPrueba);
                 }
-                double tiempoT2 = timer2.elapsedTime() / multiplicadorTrabajo;
+                double tiempoT2 = timer2.elapsedTime() / multiplicador;
                 String t2 = String.format(Locale.US, "%.8f", tiempoT2);
 
 
                 //medicion cola princenton
                 StopwatchCPU timer3 = new StopwatchCPU();
-                for (int i = 0; i < multiplicadorTrabajo; i++) {
+                for (int i = 0; i < multiplicador; i++) {
                     Cola<String> colaPrinceton = new ColaPrinceton<String>();
                     WebCrawler.simularCrawlerOffline(N, colaPrinceton);
                 }
-                double tiempoT3 = timer3.elapsedTime() / multiplicadorTrabajo;
+                double tiempoT3 = timer3.elapsedTime() / multiplicador;
                 String t3 = String.format(Locale.US, "%.8f", tiempoT3);
 
 
                 //medicion cola de pilas
                 StopwatchCPU timer4 = new StopwatchCPU();
-                for (int i = 0; i < multiplicadorTrabajo; i++) {
+                for (int i = 0; i < multiplicador; i++) {
                     Cola<String> colaDePilas = new ColaDePilas<String>();
                     WebCrawler.simularCrawlerOffline(N, colaDePilas);
                 }
-                double tiempoT4 = timer4.elapsedTime() / multiplicadorTrabajo;
-                String t4 = String.format(Locale.US, "%.8f", tiempoT4);
+                double tiempoT4 = timer4.elapsedTime() / multiplicador;
+                String t4 = String.format(Locale.US, "%.8f", tiempoT4); // Formato de número para que Excel lo lea correctamente
 
                 out.println(N + "," + t1 + "," + t2 + "," + t3 + "," + t4);
             }
