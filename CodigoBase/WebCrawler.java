@@ -18,7 +18,7 @@ public class WebCrawler {
             pila.pop();
         }
         
-        if (!xhtml.contains("<!DOCTYPE>")) {
+        if (!xhtml.toLowerCase().contains("<!doctype")) {
             return false;
         }
 
@@ -120,7 +120,7 @@ public class WebCrawler {
         }
         return todasValidas; 
     }
-
+    
 public static void simularCrawlerOffline ( int N , Cola < String > fila ) {
     fila . enqueue ( " url_raiz " ) ;
     for ( int i = 0; i < N ; i ++) {
@@ -131,15 +131,31 @@ public static void simularCrawlerOffline ( int N , Cola < String > fila ) {
     }
 }
     public static void main(String[] args) {
-        Pila<String> pila = new PilaPrinceton<String>();
-        Cola<String> cola = new ColaPrinceton<String>();
-        WebCrawler crawler = new WebCrawler(pila, cola);
+        //crawl pagina eit udp
+        System.out.println("=== CRAWL 1: https://eit.udp.cl/ (100 páginas) ===");
 
-        String urlInicial = "Crawler Test Site.html"; 
-        int limite = 200; 
+        Pila<String> pila1 = new PilaPrinceton<String>();
+        Cola<String> cola1 = new ColaPrinceton<String>();
 
-        boolean resultado = crawler.chequeaURLs(urlInicial, limite);
-        System.out.println("las paginas validas son: " + resultado);
+        WebCrawler crawler1 = new WebCrawler(pila1, cola1);
+
+        boolean resultado1 = crawler1.chequeaURLs("https://eit.udp.cl/", 100);
+
+        System.out.println("Resultado EIT: " + resultado1);
+        System.out.println("---------------------------------------------");
+
+
+        //crawl pagina crawler test
+        System.out.println("=== CRAWL 2: https://crawler-test.com (200 páginas) ===");
+
+        Pila<String> pila2 = new PilaPrinceton<String>();
+        Cola<String> cola2 = new ColaPrinceton<String>();
+
+        WebCrawler crawler2 = new WebCrawler(pila2, cola2);
+
+        boolean resultado2 = crawler2.chequeaURLs("https://crawler-test.com", 200);
+
+        System.out.println("Resultado Crawler-Test: " + resultado2);
+        System.out.println("---------------------------------------------");
     }
-    
 }
