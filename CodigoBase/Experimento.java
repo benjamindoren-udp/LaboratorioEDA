@@ -1,76 +1,65 @@
-import java.util.Locale;
-
 public class Experimento {
 
     public static String generarXHTMLSintetico(int N) {
         StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
-        for (int i = 0; i < N - 1; i++) sb.append("<div>\n");
-        for (int i = 0; i < N - 1; i++) sb.append("</div>\n");
+        
+        // Ciclos sin atajos y con llaves explícitas
+        for (int i = 0; i < N - 1; i++) {
+            sb.append("<div>\n");
+        }
+        
+        for (int i = 0; i < N - 1; i++) {
+            sb.append("</div>\n");
+        }
+        
         sb.append("</html>");
         return sb.toString();
     }
 
     public static void main(String[] args) {
         int reps = 100;
-        int iterador[] = {10, 11, 12, 13, 14, 15};
+        int[] iterador = {10, 11, 12, 13, 14, 15};
         
-        //pone un comentario menos hecho por el aimigo para explicar que es esto
-        int multiplicador = 1000; 
-        
-        Out out = new Out("resultados_laboratorio.csv");
-        out.println("N,PilaPrinceton,PilaDeCola,ColaPrinceton,ColaDePilas"); 
-
-        for (int exp : iterador) {
+        for (int i = 0; i < iterador.length; i++) {
+            int exp = iterador[i];
             int N = (int) Math.pow(2, exp);
-
             String xhtmlPrueba = generarXHTMLSintetico(N);
+            
+            String nombreArchivo = "resultados_N" + N + ".csv";
+            Out out = new Out(nombreArchivo);
+            out.println("PilaPrinceton, PilaDeCola, ColaPrinceton, ColaDePilas"); 
 
             for (int r = 0; r < reps; r++) {
                 
-                //medicion pila princenton
+                // 1. Medición Pila Princeton
                 WebCrawler crawler1 = new WebCrawler(new PilaPrinceton<String>(), new ColaPrinceton<String>());
                 StopwatchCPU timer1 = new StopwatchCPU();
-                for (int i = 0; i < multiplicador; i++) {
-                    crawler1.esXHTMLValido(xhtmlPrueba);
-                }
-                double tiempoT1 = timer1.elapsedTime() / multiplicador;
-                String t1 = String.format(Locale.US, "%.8f", tiempoT1);
+                crawler1.esXHTMLValido(xhtmlPrueba);
+                double tiempoT1 = timer1.elapsedTime();
 
-
-                //medicion pila de cola
+                // 2. Medición Pila de Cola
                 WebCrawler crawler2 = new WebCrawler(new PilaDeCola<String>(), new ColaPrinceton<String>());
                 StopwatchCPU timer2 = new StopwatchCPU();
-                for (int i = 0; i < multiplicador; i++) {
-                    crawler2.esXHTMLValido(xhtmlPrueba);
-                }
-                double tiempoT2 = timer2.elapsedTime() / multiplicador;
-                String t2 = String.format(Locale.US, "%.8f", tiempoT2);
+                crawler2.esXHTMLValido(xhtmlPrueba);
+                double tiempoT2 = timer2.elapsedTime();
 
-
-                //medicion cola princenton
+                // 3. Medición Cola Princeton
+                Cola<String> colaPrinceton = new ColaPrinceton<String>();
                 StopwatchCPU timer3 = new StopwatchCPU();
-                for (int i = 0; i < multiplicador; i++) {
-                    Cola<String> colaPrinceton = new ColaPrinceton<String>();
-                    WebCrawler.simularCrawlerOffline(N, colaPrinceton);
-                }
-                double tiempoT3 = timer3.elapsedTime() / multiplicador;
-                String t3 = String.format(Locale.US, "%.8f", tiempoT3);
+                WebCrawler.simularCrawlerOffline(N, colaPrinceton);
+                double tiempoT3 = timer3.elapsedTime();
 
-
-                //medicion cola de pilas
+                // 4. Medición Cola de Pilas
+                Cola<String> colaDePilas = new ColaDePilas<String>();
                 StopwatchCPU timer4 = new StopwatchCPU();
-                for (int i = 0; i < multiplicador; i++) {
-                    Cola<String> colaDePilas = new ColaDePilas<String>();
-                    WebCrawler.simularCrawlerOffline(N, colaDePilas);
-                }
-                double tiempoT4 = timer4.elapsedTime() / multiplicador;
-                String t4 = String.format(Locale.US, "%.8f", tiempoT4); // Formato de número para que Excel lo lea correctamente
+                WebCrawler.simularCrawlerOffline(N, colaDePilas);
+                double tiempoT4 = timer4.elapsedTime(); 
 
-                out.println(N + "," + t1 + "," + t2 + "," + t3 + "," + t4);
+                out.println(tiempoT1 + "," + tiempoT2 + "," + tiempoT3 + "," + tiempoT4);
             }
+            
+            out.close();
         }
-        
-        out.close();
     }
 }
