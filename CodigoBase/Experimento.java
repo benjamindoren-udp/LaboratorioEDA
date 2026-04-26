@@ -4,7 +4,6 @@ public class Experimento {
         StringBuilder sb = new StringBuilder();
         sb.append("<!DOCTYPE html>\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
         
-        // Ciclos sin atajos y con llaves explícitas
         for (int i = 0; i < N - 1; i++) {
             sb.append("<div>\n");
         }
@@ -32,25 +31,25 @@ public class Experimento {
 
             for (int r = 0; r < reps; r++) {
                 
-                // 1. Medición Pila Princeton
+                // medicion pila princenton
                 WebCrawler crawler1 = new WebCrawler(new PilaPrinceton<String>(), new ColaPrinceton<String>());
                 StopwatchCPU timer1 = new StopwatchCPU();
                 crawler1.esXHTMLValido(xhtmlPrueba);
                 double tiempoT1 = timer1.elapsedTime();
 
-                // 2. Medición Pila de Cola
+                // medicion pila de cola
                 WebCrawler crawler2 = new WebCrawler(new PilaDeCola<String>(), new ColaPrinceton<String>());
                 StopwatchCPU timer2 = new StopwatchCPU();
                 crawler2.esXHTMLValido(xhtmlPrueba);
                 double tiempoT2 = timer2.elapsedTime();
 
-                // 3. Medición Cola Princeton
+                //medicion cola princenton
                 Cola<String> colaPrinceton = new ColaPrinceton<String>();
                 StopwatchCPU timer3 = new StopwatchCPU();
                 WebCrawler.simularCrawlerOffline(N, colaPrinceton);
                 double tiempoT3 = timer3.elapsedTime();
 
-                // 4. Medición Cola de Pilas
+                //medicion cola de pilas
                 Cola<String> colaDePilas = new ColaDePilas<String>();
                 StopwatchCPU timer4 = new StopwatchCPU();
                 WebCrawler.simularCrawlerOffline(N, colaDePilas);
